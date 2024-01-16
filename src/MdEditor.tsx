@@ -4,13 +4,34 @@ import { useRef } from "react";
 
 import { Editor } from "@toast-ui/react-editor";
 
+const gitPlugin = () => {
+  const toHTMLRenderers = {
+    Git(node: any) {
+      const body = node.literal;
+
+      return [
+        {
+          type: "openTag",
+          tagName: "div",
+          outerNewLine: true,
+          attributes: { style: "color:hotpink;" },
+        },
+        { type: "html", content: body },
+        { type: "closeTag", tagName: "div", outerNewLine: true },
+      ];
+    },
+  };
+
+  return { toHTMLRenderers };
+};
+
 const MdEditor = () => {
-  const editorRef = useRef(null);
+  const editorRef = useRef<Editor>(null);
 
   const handleSave = () => {
-    const markDownContent = editorRef.current.getInstance().getMarkdown();
+    const markDownContent = editorRef.current?.getInstance().getMarkdown();
     if (markDownContent.length < 10) {
-      editorRef.current.getInstance().focus(); // editor에 focus
+      editorRef.current?.getInstance().focus(); // editor에 focus
       return;
     }
     console.log(markDownContent);
@@ -27,7 +48,8 @@ const MdEditor = () => {
         hideModeSwitch={true}
         theme="dark"
         usageStatistics={false}
-        initialValue="# 여기에 제목을 입력해주세요"
+        initialValue={["$$Git", "gngngngngngng", "$$"].join("\n")}
+        plugins={[gitPlugin]}
       />
       <button
         className="MarkDownSendingBtn"

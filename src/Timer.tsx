@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const Timer = () => {
   const time = useRef(4000);
