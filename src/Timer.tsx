@@ -5,7 +5,7 @@ const Timer = () => {
   const [hour, setHour] = useState(Math.floor(time.current / 3600));
   const [min, setMin] = useState(Math.floor((time.current / 60) % 60));
   const [sec, setSec] = useState(Math.floor(time.current % 60));
-  const timerId = useRef(null);
+  const timerId = useRef(0);
 
   // useEffect(() => {
   //   timerId.current = setInterval(() => {

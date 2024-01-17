@@ -42,6 +42,7 @@ const MdEditor = () => {
       <h2>Toast UI Test</h2>
       <Editor
         ref={editorRef}
+        height="1000px"
         placeholder="여기에 입력 해주세요."
         previewStyle="vertical"
         initialEditType="markdown"
