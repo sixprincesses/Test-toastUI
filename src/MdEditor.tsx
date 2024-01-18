@@ -1,8 +1,7 @@
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
-import { useRef } from "react";
-
-import { Editor } from "@toast-ui/react-editor";
+import { useRef, useState } from "react";
+import { Editor, Viewer } from "@toast-ui/react-editor";
 
 const gitPlugin = () => {
   const toHTMLRenderers = {
@@ -14,7 +13,7 @@ const gitPlugin = () => {
           type: "openTag",
           tagName: "div",
           outerNewLine: true,
-          attributes: { style: "color:hotpink;" },
+          attributes: { style: `color:hotpink; background-color:black` },
         },
         { type: "html", content: body },
         { type: "closeTag", tagName: "div", outerNewLine: true },
@@ -25,8 +24,10 @@ const gitPlugin = () => {
   return { toHTMLRenderers };
 };
 
-const MdEditor = () => {
+const InstanceMd = () => {
   const editorRef = useRef<Editor>(null);
+
+  const [testString, setTestString] = useState();
 
   const handleSave = () => {
     const markDownContent = editorRef.current?.getInstance().getMarkdown();
@@ -35,6 +36,7 @@ const MdEditor = () => {
       return;
     }
     console.log(markDownContent);
+    setTestString(markDownContent);
   };
 
   return (
@@ -42,14 +44,14 @@ const MdEditor = () => {
       <h2>Toast UI Test</h2>
       <Editor
         ref={editorRef}
-        height="1000px"
+        height="400px"
         placeholder="여기에 입력 해주세요."
-        previewStyle="vertical"
+        previewStyle="tab"
         initialEditType="markdown"
         hideModeSwitch={true}
         theme="dark"
         usageStatistics={false}
-        initialValue={["$$Git", "gngngngngngng", "$$"].join("\n")}
+        initialValue="# 이곳에 입력해주세요"
         plugins={[gitPlugin]}
       />
       <button
@@ -63,8 +65,9 @@ const MdEditor = () => {
       >
         저장하기
       </button>
+      {testString && <Viewer initialValue={testString} plugins={[gitPlugin]} />}
     </div>
   );
 };
 
-export default MdEditor;
+export default InstanceMd;
