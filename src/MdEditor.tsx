@@ -6,8 +6,11 @@ import { Editor, Viewer } from "@toast-ui/react-editor";
 const gitPlugin = () => {
   const toHTMLRenderers = {
     Git(node: any) {
-      const body = node.literal;
-
+      let body = node.literal;
+      // body = body.split("\n");
+      // body = body.join("<br/>");
+      body = body.replace(/\n/g, "<br/>");
+      // 정규표현식 활용하여 치환
       return [
         {
           type: "openTag",
