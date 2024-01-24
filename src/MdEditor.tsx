@@ -2,6 +2,10 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 import { useRef, useState } from "react";
 import { Editor, Viewer } from "@toast-ui/react-editor";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import "prismjs/themes/prism.css";
+import Prism from "prismjs";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
 
 const gitPlugin = () => {
   const toHTMLRenderers = {
@@ -29,16 +33,19 @@ const gitPlugin = () => {
 
 const InstanceMd = () => {
   const editorRef = useRef<Editor>(null);
+  const viewerRef = useRef<Viewer>(null);
 
   const [testString, setTestString] = useState();
 
   const handleSave = () => {
+    // viewerRef.current?.getInstance().destroy();
     const markDownContent = editorRef.current?.getInstance().getMarkdown();
     if (markDownContent.length < 10) {
       editorRef.current?.getInstance().focus(); // editor에 focus
       return;
     }
     console.log(markDownContent);
+
     setTestString(markDownContent);
   };
 
@@ -55,7 +62,7 @@ const InstanceMd = () => {
         theme="dark"
         usageStatistics={false}
         initialValue="# 이곳에 입력해주세요"
-        plugins={[gitPlugin]}
+        plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
       />
       <button
         className="MarkDownSendingBtn"
@@ -68,7 +75,13 @@ const InstanceMd = () => {
       >
         저장하기
       </button>
-      {testString && <Viewer initialValue={testString} plugins={[gitPlugin]} />}
+      {testString && (
+        <Viewer
+          ref={viewerRef}
+          initialValue={testString}
+          plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
+        />
+      )}
     </div>
   );
 };
