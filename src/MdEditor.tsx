@@ -36,6 +36,7 @@ const InstanceMd = () => {
   const viewerRef = useRef<Viewer>(null);
 
   const [testString, setTestString] = useState();
+  const [testHTML, setHTML] = useState();
 
   const handleSave = () => {
     // viewerRef.current?.getInstance().destroy();
@@ -45,6 +46,7 @@ const InstanceMd = () => {
       return;
     }
     console.log(markDownContent);
+    setHTML(editorRef.current?.getInstance().getHTML());
 
     setTestString(markDownContent);
   };
@@ -82,8 +84,8 @@ const InstanceMd = () => {
           plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
         />
       )}
+      {testHTML && <div dangerouslySetInnerHTML={{ __html: testHTML }}></div>}
     </div>
   );
 };
-
 export default InstanceMd;
