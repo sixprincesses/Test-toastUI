@@ -35,9 +35,13 @@ const InstanceMd = () => {
   const editorRef = useRef<Editor>(null);
   const viewerRef = useRef<Viewer>(null);
 
-  const [testString, setTestString] = useState();
-  const [testHTML, setHTML] = useState();
+  console.log(editorRef.current?.getInstance().getMarkdown());
 
+  const [testString, setTestString] = useState(
+    editorRef.current?.getInstance().getMarkdown()
+  );
+
+  viewerRef.current?.getInstance().setMarkdown(testString);
   const handleSave = () => {
     // viewerRef.current?.getInstance().destroy();
     const markDownContent = editorRef.current?.getInstance().getMarkdown();
@@ -46,9 +50,9 @@ const InstanceMd = () => {
       return;
     }
     console.log(markDownContent);
-    setHTML(editorRef.current?.getInstance().getHTML());
 
     setTestString(markDownContent);
+    viewerRef.current?.getInstance().setMarkdown(testString);
   };
 
   return (
@@ -62,6 +66,7 @@ const InstanceMd = () => {
         initialEditType="markdown"
         hideModeSwitch={true}
         theme="dark"
+        onChange={handleSave}
         usageStatistics={false}
         initialValue="# 이곳에 입력해주세요"
         plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
@@ -77,14 +82,11 @@ const InstanceMd = () => {
       >
         저장하기
       </button>
-      {testString && (
-        <Viewer
-          ref={viewerRef}
-          initialValue={testString}
-          plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
-        />
-      )}
-      {testHTML && <div dangerouslySetInnerHTML={{ __html: testHTML }}></div>}
+      <Viewer
+        ref={viewerRef}
+        initialValue={testString}
+        plugins={[gitPlugin, [codeSyntaxHighlight, { highlighter: Prism }]]}
+      />
     </div>
   );
 };
