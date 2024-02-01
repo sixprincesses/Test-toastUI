@@ -9,20 +9,75 @@ import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/d
 
 const gitPlugin = () => {
   const toHTMLRenderers = {
-    Git(node: any) {
+    GitPlus(node: any) {
       let body = node.literal;
-      // body = body.split("\n");
-      // body = body.join("<br/>");
-      body = body.replace(/\n/g, "<br/>");
-      // 정규표현식 활용하여 치환
+      const bodyList = body.split(" ");
+      console.log(bodyList);
       return [
         {
           type: "openTag",
           tagName: "div",
           outerNewLine: true,
-          attributes: { style: `color:hotpink; background-color:black` },
+          attributes: {
+            style: `color:hotpink; background-color:black; display: grid; grid-template-columns: 20px 30px 30px 22px 1fr;`,
+          },
         },
-        { type: "html", content: body },
+        {
+          type: "openTag",
+          tagName: "div",
+          outerNewLine: true,
+          attributes: {
+            // style: `color:hotpink; background-color:black; display: grid; grid-template-columns: 20px 30px 30px 22px 1fr;`,
+            style: `color:hotpink; background-color:black;`,
+          },
+        },
+        {
+          type: "html",
+          content: bodyList[0],
+        },
+        { type: "closeTag", tagName: "div", outerNewLine: true },
+        {
+          type: "openTag",
+          tagName: "div",
+          outerNewLine: true,
+          attributes: {
+            // style: `color:hotpink; background-color:black; display: grid; grid-template-columns: 20px 30px 30px 22px 1fr;`,
+            style: `color:hotpink; background-color:black;`,
+          },
+        },
+        {
+          type: "html",
+          content: bodyList[1],
+        },
+        { type: "closeTag", tagName: "div", outerNewLine: true },
+        {
+          type: "openTag",
+          tagName: "div",
+          outerNewLine: true,
+          attributes: {
+            // style: `color:hotpink; background-color:black; display: grid; grid-template-columns: 20px 30px 30px 22px 1fr;`,
+            style: `color:hotpink; background-color:black;`,
+          },
+        },
+        {
+          type: "html",
+          content: bodyList[2],
+        },
+        { type: "closeTag", tagName: "div", outerNewLine: true },
+        {
+          type: "openTag",
+          tagName: "div",
+          outerNewLine: true,
+          attributes: {
+            // style: `color:hotpink; background-color:black; display: grid; grid-template-columns: 20px 30px 30px 22px 1fr;`,
+            style: `color:hotpink; background-color:black;`,
+          },
+        },
+        {
+          type: "html",
+          content: bodyList[3],
+        },
+        { type: "closeTag", tagName: "div", outerNewLine: true },
         { type: "closeTag", tagName: "div", outerNewLine: true },
       ];
     },
@@ -49,6 +104,7 @@ const InstanceMd = () => {
       editorRef.current?.getInstance().focus(); // editor에 focus
       return;
     }
+    console.log(editorRef.current?.getInstance().getHTML());
     console.log(markDownContent);
 
     setTestString(markDownContent);
